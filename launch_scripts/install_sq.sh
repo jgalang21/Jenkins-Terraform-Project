@@ -1,5 +1,10 @@
 #!/bin/bash
 
+
+# Add a short sleep to ensure all services are up
+sleep 60
+
+
 # Update packages
 sudo yum update -y
 
@@ -10,16 +15,19 @@ sudo dnf install java-17-amazon-corretto -y
 cd /home/ec2-user
 
 # Download SonarQube
-sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.0.65466.zip
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.0.65466.zip
 
 # Unzip SonarQube
-sudo unzip sonarqube-9.9.0.65466.zip
+unzip sonarqube-9.9.0.65466.zip
 
-# Change ownership
+
 sudo chown -R ec2-user:ec2-user /home/ec2-user/sonarqube-9.9.0.65466
 
 # Change to SonarQube's bin directory
 cd /home/ec2-user/sonarqube-9.9.0.65466/bin/linux-x86-64/
 
-# Start SonarQube in the background
-sudo ./sonar.sh start &
+sudo chmod -R 755 /home/ec2-user/sonarqube-9.9.0.65466
+
+echo 'got to 31' > 31.txt
+./sonar.sh start
+echo 'got to 33' > 33.txt 

@@ -105,17 +105,35 @@ resource "aws_instance" "app_server" {
   associate_public_ip_address = true
 }
 
-#SonarQube EC2 Host
 resource "aws_instance" "sonarqube_host" {
   ami                    = "ami-0d081196e3df05f4d"
   instance_type          = "t2.medium"
   key_name               = "ec2"  
   vpc_security_group_ids = [aws_security_group.sonarqube.id] 
-  count = 1
+  count                  = 1
+  associate_public_ip_address = true
+
+  # SonarQube installation via user data script
+  user_data = file("${path.module}/launch_scripts/install_sq.sh")
+
+  # Remote-exec provisioner to run post-deployment commands
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("~/.ssh/ec2.pem")  # Path to your private SSH key
+      host        = self.public_ip          # Use public IP for connection
+    }
+
+    # Commands to run on SonarQube EC2 instance
+    inline = [
+      "sudo yum update -y",
+      "cd /home/ec2-user/sonarqube-9.9.0.65466/bin/linux-x86-64/",
+      "./sonar.sh start"
+    ]
+  }
+
   tags = {
     Name = "SonarQube"
   }
-
-  user_data = file("${path.module}/launch_scripts/install_sq.sh")
-  associate_public_ip_address = true
 }
