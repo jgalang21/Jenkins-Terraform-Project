@@ -22,7 +22,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from all IPs (best to restrict this to your IP)
+    cidr_blocks = ["0.0.0.0/0"] 
   }
 
   ingress {
@@ -30,7 +30,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTP from all IPs
+    cidr_blocks = ["0.0.0.0/0"]  
   }
 
   ingress {
@@ -38,7 +38,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow HTTPS from all IPs
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -46,14 +46,14 @@ resource "aws_security_group" "app_sg" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow Jenkins Web UI from all IPs
+    cidr_blocks = ["0.0.0.0/0"]  
   }
 
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
+    cidr_blocks = ["0.0.0.0/0"] 
   }
 
   tags = {
@@ -70,27 +70,27 @@ resource "aws_security_group" "sonarqube" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SSH from all IPs (best to restrict this to your IP)
+    cidr_blocks = ["0.0.0.0/0"]  
   }
   ingress {
     description = "Allow SonarQube"
     from_port   = 9000
     to_port     = 9000
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow SonarQube from all IPs
+    cidr_blocks = ["0.0.0.0/0"]  
   }
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]  # Allow all outbound traffic
+    cidr_blocks = ["0.0.0.0/0"]  
   }
   tags = {
     Name = "SonarQube SGs"
   }
 }
 
-#Jenkins EC2 Host - requires t2 medium or greater
+
 resource "aws_instance" "app_server" {
   ami                    = "ami-0d081196e3df05f4d"
   instance_type          = "t2.medium"
@@ -113,22 +113,24 @@ resource "aws_instance" "sonarqube_host" {
   count                  = 1
   associate_public_ip_address = true
 
-  # SonarQube installation via user data script
+  
   user_data = file("${path.module}/launch_scripts/install_sq.sh")
 
-  # Remote-exec provisioner to run post-deployment commands
+
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("~/.ssh/ec2.pem")  # Path to your private SSH key
-      host        = self.public_ip          # Use public IP for connection
+      private_key = file("~/.ssh/ec2.pem")  
+      host        = self.public_ip          
     }
 
-    # Commands to run on SonarQube EC2 instance
     inline = [
+      "while [ ! -f /home/ec2-user/sonarqube-9.9.0.65466/bin/linux-x86-64/sonar.sh ]; do echo 'Waiting for SonarQube installation...'; sleep 10; done",
       "sudo yum update -y",
       "cd /home/ec2-user/sonarqube-9.9.0.65466/bin/linux-x86-64/",
+      "sudo chown -R ec2-user:ec2-user /home/ec2-user/sonarqube-9.9.0.65466",
+      "sudo chmod -R 755 /home/ec2-user/sonarqube-9.9.0.65466",
       "./sonar.sh start"
     ]
   }
