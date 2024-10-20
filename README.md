@@ -42,6 +42,7 @@ Final Application Preview:
 
 
 
+(Note that none of these are live URLs, as Jenkins/SonarQube requite t2.medium, which can get expensive)
 
 ## Installation
 
