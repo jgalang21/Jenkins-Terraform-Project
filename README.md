@@ -13,7 +13,8 @@ The static website repo can be found [here](https://github.com/jgalang21/static-
 * AWS - EC2 Instances to host Jenkins, SonarQube and Docker.
 * Terraform - Automate the EC2 builds and install respective software instead of manually creating each instances.
 * SonarQube - Scan the code for vulnerabilites.
-* Docker - Host the static website using nginx container
+* Docker - Host the static website using nginx container.
+* Bash Scripts - Automate installation on specific EC2 instances.
 
 
 ## Screenshots of application
