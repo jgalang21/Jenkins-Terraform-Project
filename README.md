@@ -18,6 +18,30 @@ The static website repo can be found [here](https://github.com/jgalang21/static-
 
 ## Screenshots of application
 
+EC2 Instances: 
+<img width="1272" alt="Screen Shot 2024-10-20 at 4 55 20 PM" src="https://github.com/user-attachments/assets/8856b9cf-f60e-4442-bd59-07892ebe870b">
+
+Jenkins Pipeline (Ignore the failure, the Dockerfile had a potential vulnerability since it's copying all the files, but this is only for demo purposes)
+
+![Screen Shot 2024-10-20 at 4 57 10 PM](https://github.com/user-attachments/assets/ceac6628-7c8b-477d-8c92-a4114e510a4a)
+
+SonarQube
+![Screen Shot 2024-10-20 at 4 57 29 PM](https://github.com/user-attachments/assets/5bc190e2-c347-45b9-b9ad-4bce0335e827)
+![Screen Shot 2024-10-20 at 4 57 46 PM](https://github.com/user-attachments/assets/921366ec-f4ce-461f-a471-df47ecd4df46)
+
+
+Some of the Jenkins Configurations: 
+![Screen Shot 2024-10-20 at 4 58 13 PM](https://github.com/user-attachments/assets/07738573-c550-4ecb-8448-385cf52151eb)
+
+![Screen Shot 2024-10-20 at 4 58 20 PM](https://github.com/user-attachments/assets/3bb43b4b-0573-48f4-9c49-0418b56e75a1)
+
+![Screen Shot 2024-10-20 at 4 58 25 PM](https://github.com/user-attachments/assets/44d7fd39-8627-4980-8e25-2dac8cbbad78)
+
+Final Application Preview: 
+![Screen Shot 2024-10-20 at 4 58 45 PM](https://github.com/user-attachments/assets/b5043e39-944a-45b6-9cb3-43fe268f0acc)
+
+
+
 
 ## Installation
 
